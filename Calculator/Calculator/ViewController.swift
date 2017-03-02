@@ -1,10 +1,4 @@
-//
-//  ViewController.swift
-//  Calculator
-//
-//  Created by Seab on 2/24/17.
-//  Copyright © 2017 Seab Jackson. All rights reserved.
-//
+
 
 import UIKit
 
@@ -34,19 +28,23 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func performOperation(_ sender: UIButton) {
-        userIsInTheMiddleOfTyping = false
-        if let mathematicalSymbol = sender.currentTitle {
-            switch mathematicalSymbol {
-            case "π":
-                displayValue = Double.pi
-                case "√":
-                    displayValue = sqrt(displayValue)
-            default:
-                break
-            }
-        }
-    }
+    private var brain = CalculatorBrain()
     
+    @IBAction func performOperation(_ sender: UIButton) {
+        if userIsInTheMiddleOfTyping {
+            brain.setOperand(displayValue)
+            userIsInTheMiddleOfTyping = false
+        }
+        
+        if let mathematicalSymbol = sender.currentTitle {
+            brain.performOperation(mathematicalSymbol)
+        }
+        
+        if let result = brain.result {
+            displayValue = result
+        }
+        
+    }
+
 }
 
